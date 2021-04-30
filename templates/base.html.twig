@@ -1,19 +1,36 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
-
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
+<!DOCTYPE>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/darkly/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    {% for value in  app.session.flashBag.get('info') %}
+        <div class="alert alert-info">
+            {{ value }}
+        </div>
+    {% endfor %}
+    {% for value in  app.session.flashBag.get('success') %}
+        <div class="alert alert-success">
+            {{ value }}
+        </div>
+    {% endfor %}
+    {% for value in  app.session.flashBag.get('error') %}
+        <div class="alert alert-danger">
+            {{ value }}
+        </div>
+    {% endfor %}
+    <h1>Liste des todos </h1>
+    <ol class="list-group">
+        {% for name, value in app.session.get('todos') %}
+        <li class="list-group-item">
+        {{ name }} : {{ value }}
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+</body>
