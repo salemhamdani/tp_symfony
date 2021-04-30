@@ -32,7 +32,7 @@ class TodoController extends AbstractController
     }
 
     /**
-     * @Route("/add/{name}/{content<\d+>}", name="addTodo")
+     * @Route("/add/{name}/{content}", name="addTodo")
      */
     public function addTodo($name, $content, SessionInterface $session) {
 

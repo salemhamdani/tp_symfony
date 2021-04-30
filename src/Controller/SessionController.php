@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SessionController extends AbstractController
 {
     /**
-     * @Route("/session", name="session")
+     * @Route("/testSession", name="session")
      */
     public function index(SessionInterface $session): Response
     {
