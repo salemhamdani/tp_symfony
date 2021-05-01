@@ -36,24 +36,72 @@ class TodoController extends AbstractController
      */
     public function addTodo($name, $content, SessionInterface $session) {
 
-        // Vérifier que ma session contient le tableau de todo
         if (!$session->has('todos')) {
-            //ko => messsage erreur + redirection
             $this->addFlash('error', "La liste des todos n'est pas encore initialisée");
         } else {
-            //ok
-            // Je vérifie si le todo existe
             $todos = $session->get('todos');
             if (isset($todos[$name])) {
-                //ko => messsage erreur + redirection
                 $this->addFlash('error', "Le todo $name existe déjà");
             } else {
-                //ok => j ajoute et je redirige avec message succès
                 $todos[$name] = $content;
                 $session->set('todos', $todos);
                 $this->addFlash('success', "Le todo $name a été ajouté avec succès");
             }
         }
         return $this->redirectToRoute('todo');
+
     }
+
+
+    /**
+     * @Route("/deleteTodo/{name}/", name="deleteTodo")
+     */
+    public function deleteTodo($name, SessionInterface $session) {
+        if (!$session->has('todos')) {
+            $this->addFlash('error', "La liste des todos n'est pas encore initialisée");
+        } else {
+            $todos = $session->get('todos');
+            if (isset($todos[$name])) {
+                unset($todos[$name]);
+                $session->set('todos', $todos);
+                $this->addFlash('success', "Le todo $name a été supprimé avec succès");
+            } else {
+                $this->addFlash('error', "Le todo $name n'existe pas");
+
+            }
+        }
+        return $this->redirectToRoute('todo');
+    }
+
+
+    /**
+    * @Route("/updateTodo/{name}/{content}", name="updateTodo")
+    */
+    public function updateTodo($name, $content, SessionInterface $session)
+    {
+        $todos = $session->get('todos');
+        if (isset($todos[$name])) {
+            $todos[$name] = $content;
+            $session->set('todos', $todos);
+            $this->addFlash('success', "Le todo $name a été mis à jour avec succès");
+        } else {
+            $this->addFlash('error', "Le todo $name n'existe pas");
+        }
+    return $this->redirectToRoute('todo');
+    }
+
+    /**
+    * @Route("/resetTodo", name="resetTodo")
+    */
+    public function resetTodo(SessionInterface $session)
+    {
+        if (!$session->has('todos')) {
+            $this->addFlash('error', "La liste des todos n'est pas encore initialisée");
+        } else {
+            $session->remove('todos');
+            $this->addFlash('success', "Todos reset effectué avec succès");
+        }
+        return $this->redirectToRoute('todo');
+    }
+
 }
